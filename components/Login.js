@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Appbar, Text, TextInput, Button, Snackbar } from 'react-native-paper';
 
 export default function Login({ navigation }) {
@@ -22,6 +22,7 @@ export default function Login({ navigation }) {
       
 
       <View style={styles.container}>
+        <Image source={require('../assets/login.png')} style={{ width: 210, height: 200, alignSelf: 'center', marginBottom: 10 }} />
         <Text style={styles.textLabel}>Login</Text>
         <TextInput
           label="Usuário"
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#f6f6f6',
   },
   input: {

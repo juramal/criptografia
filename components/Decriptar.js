@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { Appbar, Text, TextInput, Button, Snackbar } from 'react-native-paper';
 
 export default function Decriptar({ navigation }) {
@@ -18,10 +18,10 @@ export default function Decriptar({ navigation }) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      
+    <View style={{ flex: 1 }}>      
 
       <View style={styles.container}>
+        <Image source={require('../assets/decriptada.png')} style={{ width: 210, height: 200, alignSelf: 'center', marginBottom: 10 }} />
         <Text style={styles.textLabel}>Decriptar</Text>
         <TextInput
           label="Mensagem à Decriptar"
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#f6f6f6',
   },
   input: {

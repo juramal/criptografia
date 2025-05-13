@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Linking } from 'react-native';
+import { View, StyleSheet, Linking, Image } from 'react-native';
 import { Text, TextInput, Button, Snackbar } from 'react-native-paper';
+import { encode as b64encode } from 'react-native-quick-base64';
 
 export default function Criptografar({ navigation }) {
   const [mensagem, setMensagem] = useState('');
@@ -21,9 +22,24 @@ export default function Criptografar({ navigation }) {
     }).join('');
   };
 
-  const gerarHashBase64 = (texto) => {
-    return Buffer.from(texto).toString('base64');
-  };
+  const gerarHashBase64 = () => {
+  const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numeros = '0123456789';
+
+  let parteLetras = '';
+  let parteNumeros = '';
+
+  for (let i = 0; i < 6; i++) {
+    parteLetras += letras.charAt(Math.floor(Math.random() * letras.length));
+    parteNumeros += numeros.charAt(Math.floor(Math.random() * numeros.length));
+  }
+
+  // Junta e embaralha as letras e números
+  const combinado = (parteLetras + parteNumeros).split('');
+  const embaralhado = combinado.sort(() => Math.random() - 0.5).join('');
+
+  return embaralhado;
+};
 
   const handleCriptografar = () => {
     const deslocamento = parseInt(passo, 10);
@@ -39,7 +55,7 @@ export default function Criptografar({ navigation }) {
 
   const handleCompartilhar = () => {
     const hash = gerarHashBase64(mensagemCriptografada);
-    const texto = `Segue minha mensagem:\nMensagem criptografada: ${mensagemCriptografada}\nHash gerado: ${hash}`;
+    const texto = `Segue minha mensagem:\n*Mensagem Criptografada:* ${mensagemCriptografada}\n*Hash:* ${hash}`;
     const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
     Linking.openURL(url);
   };
@@ -47,6 +63,7 @@ export default function Criptografar({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
+        <Image source={require('../assets/criptografada.png')} style={{ width: 215, height: 200, alignSelf: 'center', marginBottom: 10 }} />
         <Text style={styles.textLabel}>Criptografar</Text>
         <TextInput
           label="Mensagem à Criptografar"
@@ -71,7 +88,7 @@ export default function Criptografar({ navigation }) {
           <Button
             mode="outlined"
             onPress={handleCompartilhar}
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 20, backgroundColor: '#a9ea9e' }}
           >
             Compartilhar no WhatsApp
           </Button>
@@ -93,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#f6f6f6',
   },
   input: {
