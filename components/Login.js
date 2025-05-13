@@ -1,0 +1,69 @@
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Appbar, Text, TextInput, Button, Snackbar } from 'react-native-paper';
+
+export default function Login({ navigation }) {
+  const [login, setLogin] = useState('');
+  const [senha, setSenha] = useState('');
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const handleLogin = () => {
+    if (login && senha) {
+      setSnackbarMessage(`Bem-vindo, ${login}!`);
+    } else {
+      setSnackbarMessage('Preencha o login e a senha.');
+    }
+    setSnackbarVisible(true);
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      
+
+      <View style={styles.container}>
+        <Text style={styles.textLabel}>Login</Text>
+        <TextInput
+          label="Usuário"
+          mode="outlined"
+          value={login}
+          onChangeText={setLogin}
+          style={styles.input}
+        />
+        <TextInput
+          label="Senha"
+          mode="outlined"
+          secureTextEntry
+          value={senha}
+          onChangeText={setSenha}
+          style={styles.input}
+        />
+        <Button mode="contained" onPress={handleLogin}>
+          Entrar
+        </Button>
+        <Snackbar
+          visible={snackbarVisible}
+          onDismiss={() => setSnackbarVisible(false)}
+          duration={3000}
+        >
+          {snackbarMessage}
+        </Snackbar>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#f6f6f6',
+  },
+  input: {
+    marginBottom: 16,
+  },
+  textLabel: {
+    fontSize: 30  
+  }
+});

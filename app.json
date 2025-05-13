@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ciptografia",
-    "slug": "ciptografia",
+    "name": "criptografia",
+    "slug": "criptografia",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
