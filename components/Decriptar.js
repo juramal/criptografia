@@ -33,7 +33,7 @@ export default function Decriptar({ navigation }) {
         <TextInput
           label="Passo"
           mode="outlined"
-          secureTextEntry
+          keyboardType="numeric"
           value={passo}
           onChangeText={setPasso}
           style={styles.input}
