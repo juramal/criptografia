@@ -55,7 +55,7 @@ export default function Criptografar({ navigation }) {
 
   const handleCompartilhar = () => {
     const hash = gerarHashBase64(mensagemCriptografada);
-    const texto = `Segue minha mensagem:\n*Mensagem Criptografada:* ${mensagemCriptografada}\n*Hash:* ${hash}`;
+    const texto = `Mensagem Criptografada:\n*Mensagem:* ${mensagemCriptografada}\n*Hash:* ${hash}`;
     const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
     Linking.openURL(url);
   };
@@ -118,7 +118,5 @@ const styles = StyleSheet.create({
   },
   textLabel: {
     fontSize: 30,
-    marginBottom: 20,
-    textAlign: 'center',
   },
 });
