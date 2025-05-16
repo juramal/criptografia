@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Linking, Image } from 'react-native';
 import { Text, TextInput, Button, Snackbar } from 'react-native-paper';
-import { encode as b64encode } from 'react-native-quick-base64';
+//import { encode as b64encode } from 'react-native-quick-base64';
 
 export default function Criptografar({ navigation }) {
   const [mensagem, setMensagem] = useState('');

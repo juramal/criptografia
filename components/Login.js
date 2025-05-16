@@ -9,13 +9,17 @@ export default function Login({ navigation }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleLogin = () => {
-    if (login && senha) {
-      setSnackbarMessage(`Bem-vindo, ${login}!`);
-    } else {
-      setSnackbarMessage('Preencha o login e a senha.');
-    }
+  if (login && senha) {
+    setSnackbarMessage(`Bem-vindo, ${login}!`);
     setSnackbarVisible(true);
-  };
+    setTimeout(() => {
+      navigation.navigate('Criptografar'); // redireciona para a tela Criptografar
+    }, 1000); // espera 1 segundo para o usuário ver o snackbar
+  } else {
+    setSnackbarMessage('Preencha o login e a senha.');
+    setSnackbarVisible(true);
+  }
+};
 
   return (
     <View style={{ flex: 1 }}>
