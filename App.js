@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -44,14 +45,41 @@ function MainTabs() {
 }
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    AsyncStorage.removeItem("token").then(() => {
+      setIsAuthenticated(false);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return null; // ou um splash/loading
+
   return (
     <SafeAreaProvider>
       <PaperProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Registrar" component={Register} />
-            <Stack.Screen name="Main" component={MainTabs} />
+            {!isAuthenticated ? (
+              <>
+                <Stack.Screen name="Login">
+                  {(props) => (
+                    <Login
+                      {...props}
+                      onLoginSuccess={async (token) => {
+                        await AsyncStorage.setItem("token", token);
+                        setIsAuthenticated(true);
+                      }}
+                    />
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="Registrar" component={Register} />
+              </>
+            ) : (
+              <Stack.Screen name="Main" component={MainTabs} />
+            )}
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

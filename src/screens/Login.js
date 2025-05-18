@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { Text, TextInput, Button, Snackbar } from "react-native-paper";
 import { loginUser } from "../service/authService";
 
-export default function Login({ navigation }) {
+export default function Login({ navigation, onLoginSuccess }) {
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
   const [snackbarVisible, setSnackbarVisible] = useState(false);
@@ -16,7 +22,9 @@ export default function Login({ navigation }) {
         setSnackbarMessage(`Bem-vindo, ${usuario.username}!`);
         setSnackbarVisible(true);
         setTimeout(() => {
-          navigation.navigate("Main");
+          if (onLoginSuccess) {
+            onLoginSuccess(usuario.token); // Passe o token para o App
+          }
         }, 1000);
       } catch (error) {
         setSnackbarMessage(error.message || "Erro ao fazer login.");
