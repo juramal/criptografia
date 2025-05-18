@@ -91,8 +91,12 @@ export default function Criptografar({ navigation }) {
                   label="Hash da Mensagem"
                   mode="outlined"
                   value={hashMensagem}
-                  style={styles.input}
+                  style={[styles.input, { fontSize: 13 }]}
                   editable={false}
+                  multiline={false}
+                  selectTextOnFocus
+                  scrollEnabled
+                  right={null}
                 />
               </View>
               <IconButton

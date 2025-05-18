@@ -61,6 +61,7 @@ export default function Decriptar({ navigation }) {
             value={hash}
             onChangeText={setHash}
             style={styles.input}
+            multiline={false}
           />
           <Button mode="contained" onPress={handleDecriptar}>
             Decriptar
