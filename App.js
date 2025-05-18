@@ -55,7 +55,7 @@ export default function App() {
     });
   }, []);
 
-  if (loading) return null; // ou um splash/loading
+  if (loading) return null;
 
   return (
     <SafeAreaProvider>

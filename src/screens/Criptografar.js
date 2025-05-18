@@ -7,8 +7,15 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Text, TextInput, Button, Snackbar } from "react-native-paper";
+import {
+  Text,
+  TextInput,
+  Button,
+  Snackbar,
+  IconButton,
+} from "react-native-paper";
 import { criptografarMensagem } from "../service/cryptoService";
+import * as Clipboard from "expo-clipboard";
 
 export default function Criptografar({ navigation }) {
   const [mensagem, setMensagem] = useState("");
@@ -25,7 +32,7 @@ export default function Criptografar({ navigation }) {
         const response = await criptografarMensagem(mensagem, passo);
         setMensagemCriptografada(response.encrypted || "");
         setHashMensagem(response.hash || "");
-        setMensagem(response.encrypted || ""); // Atualiza o campo da mensagem
+        setMensagem(response.encrypted || "");
         setSnackbarMessage(`Criptografado: ${response.encrypted || ""}`);
       } catch (error) {
         setSnackbarMessage(error.message || "Erro ao criptografar mensagem");
@@ -40,6 +47,12 @@ export default function Criptografar({ navigation }) {
     const texto = `Mensagem Criptografada:\n*Mensagem:* ${mensagemCriptografada}\n*Hash:* ${hashMensagem}`;
     const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
     Linking.openURL(url);
+  };
+
+  const handleCopiarHash = async () => {
+    await Clipboard.setStringAsync(hashMensagem);
+    setSnackbarMessage("Hash copiado!");
+    setSnackbarVisible(true);
   };
 
   return (
@@ -72,13 +85,23 @@ export default function Criptografar({ navigation }) {
             style={styles.input}
           />
           {hashMensagem ? (
-            <TextInput
-              label="Hash da Mensagem"
-              mode="outlined"
-              value={hashMensagem}
-              style={styles.input}
-              editable={false}
-            />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flex: 1 }}>
+                <TextInput
+                  label="Hash da Mensagem"
+                  mode="outlined"
+                  value={hashMensagem}
+                  style={styles.input}
+                  editable={false}
+                />
+              </View>
+              <IconButton
+                icon="content-copy"
+                size={24}
+                onPress={handleCopiarHash}
+                accessibilityLabel="Copiar hash"
+              />
+            </View>
           ) : null}
           <Button mode="contained" onPress={handleCriptografar}>
             Criptografar
@@ -107,7 +130,7 @@ export default function Criptografar({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 40,
+    padding: 20,
     flex: 1,
     justifyContent: "flex-start",
     backgroundColor: "#f6f6f6",

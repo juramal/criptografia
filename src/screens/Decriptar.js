@@ -80,7 +80,7 @@ export default function Decriptar({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 40,
+    padding: 20,
     flex: 1,
     justifyContent: "flex-start",
     backgroundColor: "#f6f6f6",
