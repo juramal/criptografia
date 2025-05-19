@@ -6,6 +6,8 @@ import {
   Image,
   Keyboard,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView, Platform,
+  
 } from "react-native";
 import {
   Text,
@@ -57,7 +59,12 @@ export default function Criptografar({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.container}>
           <Image
             source={require("../../assets/criptografada.png")}
@@ -128,6 +135,7 @@ export default function Criptografar({ navigation }) {
           </Snackbar>
         </View>
       </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }

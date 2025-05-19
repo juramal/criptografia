@@ -5,6 +5,8 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView, Platform,
+  ScrollView,
 } from "react-native";
 import {
   Text,
@@ -50,7 +52,11 @@ export default function Registro({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           <Image
             source={require("../../assets/login.png")}
@@ -119,7 +125,9 @@ export default function Registro({ navigation }) {
             {snackbarMessage}
           </Snackbar>
         </View>
-      </View>
+      
+      </ScrollView>
+    </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }

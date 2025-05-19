@@ -5,6 +5,9 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView, 
+  Platform,
+  ScrollView 
 } from "react-native";
 import { Text, TextInput, Button, Snackbar } from "react-native-paper";
 import { loginUser } from "../service/authService";
@@ -38,6 +41,11 @@ export default function Login({ navigation, onLoginSuccess }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View style={{ flex: 1 }}>
         <View style={styles.container}>
           <Image
@@ -88,6 +96,8 @@ export default function Login({ navigation, onLoginSuccess }) {
           </Snackbar>
         </View>
       </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
