@@ -6,30 +6,82 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Appbar, Text, TextInput, Button, Snackbar } from "react-native-paper";
-import { descriptografarMensagem } from "../service/cryptoService";
+import { Text, TextInput, Button, Snackbar } from "react-native-paper";
+import { descriptografarMensagem, verificarHashUsada } from "../service/cryptoService";
+import * as Clipboard from 'expo-clipboard';
 
 export default function Decriptar({ navigation }) {
+  const [hashUsado, setHashUsado] = useState(false);  
   const [mensagem, setMensagem] = useState("");
   const [hash, setHash] = useState("");
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const handleDecriptar = () => {
-    Keyboard.dismiss();
-    if (mensagem && hash) {
-      descriptografarMensagem(mensagem, hash)
-        .then((response) => {
-          setMensagem(response.decrypted || "");
-          setHash(response.hash || "");
-          setSnackbarMessage(`Mensagem Decriptada}`);
-        })
-        .catch((error) => {
-          setSnackbarMessage(error.message || "Erro ao decriptar mensagem");
-        });
+  const handlePaste = async () => {
+    const text = await Clipboard.getStringAsync();
+    const cleanText = text.replace(/\r/g, '').replace(/\u200E/g, '').replace(/\u202F/g, '').trim();
+
+    const messageMatch = cleanText.match(/\*?Mensagem:\*?\s*(.+)/i);
+    const hashMatch = cleanText.match(/\*?Hash:\*?\s*([a-f0-9\-]+)/i);
+
+    if (messageMatch && hashMatch) {
+      const mensagemExtraida = messageMatch[1].trim();
+      const hashExtraido = hashMatch[1].trim();
+
+      setMensagem(mensagemExtraida);
+      setHash(hashExtraido);
+
+      try {
+        const usado = await verificarHashUsada(hashExtraido);
+        if (usado) {
+          setHashUsado(true);
+          setSnackbarMessage("Este hash já foi utilizado.");
+        } else {
+          setHashUsado(false);
+          setSnackbarMessage("Mensagem e Hash colados com sucesso.");
+        }
+      } catch (error) {
+        setHashUsado(false);
+        console.log(hashExtraido);
+        console.log(error);
+        setSnackbarMessage("Erro ao verificar o hash.");
+      }
     } else {
-      setSnackbarMessage("Preencha a Mensagem e o Passo.");
+      setSnackbarMessage("Formato inválido. Copie a mensagem completa no formato correto.");
     }
+
+    setSnackbarVisible(true);
+  };
+
+  const handleDecriptar = async () => {
+    Keyboard.dismiss();
+
+    const hashLimpo = hash.trim().replace(/\u200E/g, '').replace(/\u202F/g, '');
+    if (!mensagem || !hashLimpo) {
+      setSnackbarMessage("Preencha a Mensagem e o Hash.");
+      setSnackbarVisible(true);
+      return;
+    }
+
+    try {
+      const usado = await verificarHashUsada(hashLimpo);
+      if (usado) {
+        setHashUsado(true);
+        setSnackbarMessage("Hash já utilizado. Não é possível decriptar.");
+        setSnackbarVisible(true);
+        return;
+      } else {
+        setHashUsado(false);
+      }
+
+      const response = await descriptografarMensagem(mensagem, hashLimpo);
+      setMensagem(response.decrypted || "");
+      setHash(response.hash || "");
+      setSnackbarMessage("Mensagem decriptada com sucesso.");
+    } catch (error) {
+      setSnackbarMessage(error.message || "Erro ao decriptar mensagem.");
+    }
+
     setSnackbarVisible(true);
   };
 
@@ -47,6 +99,13 @@ export default function Decriptar({ navigation }) {
             }}
           />
           <Text style={styles.textLabel}>Decriptar</Text>
+          <Button 
+            mode="outlined" 
+            style={{ marginBottom: 10 }} 
+            onPress={handlePaste}
+          >
+            Colar Mensagem do Whatsapp
+          </Button>
           <TextInput
             label="Mensagem à Decriptar"
             mode="outlined"
@@ -55,15 +114,23 @@ export default function Decriptar({ navigation }) {
             style={styles.input}
           />
           <TextInput
-            label="hash"
+            label="Hash"
             mode="outlined"
             keyboardType="numeric"
             value={hash}
             onChangeText={setHash}
-            style={styles.input}
+            style={[
+              styles.input,
+              hashUsado && { borderColor: 'red', borderWidth: 2 }
+            ]}
             multiline={false}
+            error={hashUsado}
           />
-          <Button mode="contained" onPress={handleDecriptar}>
+          <Button 
+            mode="contained" 
+            onPress={handleDecriptar}
+            disabled={hashUsado}
+          >
             Decriptar
           </Button>
           <Snackbar

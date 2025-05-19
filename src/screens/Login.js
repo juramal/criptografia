@@ -51,7 +51,7 @@ export default function Login({ navigation, onLoginSuccess }) {
           />
           <Text style={styles.textLabel}>Login</Text>
           <TextInput
-            label="Usuário"
+            label="E-mail"
             mode="outlined"
             value={login}
             onChangeText={setLogin}

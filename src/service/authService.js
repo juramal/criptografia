@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_URL = "http://192.168.1.12:3000/auth";
+const API_URL = "http://192.168.1.124:3000/auth";
 
 export async function registerUser(username, email, password) {
   const response = await fetch(`${API_URL}/register`, {

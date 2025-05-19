@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_URL = "http://192.168.1.12:3000/crypto";
+const API_URL = "http://192.168.1.124:3000/crypto";
 
 export async function criptografarMensagem(mensagem, passo) {
   const token = await AsyncStorage.getItem("userToken");
@@ -40,8 +40,34 @@ export async function descriptografarMensagem(mensagem, hash) {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Erro ao descriptografar mensagem");
+    throw new Error(data.message || "Erro ao decriptografar mensagem");
   }
 
   return data;
+}
+
+export async function verificarHashUsada(hash) {
+  
+  const token = await AsyncStorage.getItem("userToken");
+  if (!token) throw new Error("Usuário não autenticado");
+
+  const response = await fetch(`${API_URL}/verifyHash`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ hash }),
+  });
+
+  const data = await response.json();
+  
+
+  if (!response.ok) {
+    throw new Error(data.message || "O Hash já foi utilizado!");
+  }
+
+  return data;
+  
+  
 }
