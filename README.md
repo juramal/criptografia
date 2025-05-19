@@ -40,25 +40,25 @@ O projeto tem como objetivo implementar a criptografia e decriptação de mensag
 
 - **Tela de Registro**
   <details>
-    <summary>Exibir Rela de Registro</summary>
+    <summary>Exibir Tela de Registro</summary>
     <img src="https://github.com/leonfagundes27/Assets/blob/main/Images/APP-REGISTER.jpeg" width="220"/>
   </details>
   
 - **Tela de Login**
   <details>
-    <summary>Exibir Rela de Login</summary>
+    <summary>Exibir Tela de Login</summary>
     <img src="https://github.com/leonfagundes27/Assets/blob/main/Images/APP-LOGIN.jpeg" width="220"/>
   </details>
 
 - **Tela de Criptografia**
   <details>
-    <summary>Exibir Rela de Criptografia</summary>
+    <summary>Exibir Tela de Criptografia</summary>
     <img src="https://github.com/leonfagundes27/Assets/blob/main/Images/APP-ECRPT.jpeg" width="220"/>
   </details>
 
 - **Tela de Decriptação**
   <details>
-    <summary>Exibir Rela de Decriptação</summary>
+    <summary>Exibir Tela de Decriptação</summary>
     <img src="https://github.com/leonfagundes27/Assets/blob/main/Images/APP-DECRYPT.jpeg" width="220"/>
   </details>
 
