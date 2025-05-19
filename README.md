@@ -20,7 +20,7 @@ O projeto tem como objetivo implementar a criptografia e decriptação de mensag
 
 ## 🧠 Arquitetura do Projeto
 
-<img src="https://github.com/leonfagundes27/Assets/blob/main/Images/MVC-ARC-APP.png" width="600"/>
+<img src="https://github.com/leonfagundes27/Assets/blob/main/Images/arc-app.png" width="600"/>
 
 ---
 
